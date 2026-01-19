@@ -4,8 +4,17 @@
 // });
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue'
 
-// --- State Variables for Form and Loader ---
-const selectedAgency = ref('') 
+const dmpForm = useState('dmp-form', () => ({
+  selectedAgency: '',
+  agency: '',
+  projectSummary: '',
+  dataType: '',
+  dataSource: '',
+  humanSubjects: 'No',
+  dataSharing: '',
+  dataVolume: ''
+}))
+
 const agencyItems = ref([
   { label: 'NIH', value: 'NIH' },
   { label: 'NSF', value: 'NSF', disabled: true }, // grayed out
@@ -39,10 +48,6 @@ const NIHAgencyItems = [
   // … you can include additional NIH offices/centers as needed
 ];
 
-const agency = ref('')
-const projectSummary = ref('')
-const dataType = ref<string | null>(null)
-
 const dataTypeItems = ref<string[]>([
   'Imaging',
   'Surveys',
@@ -52,14 +57,10 @@ const dataTypeItems = ref<string[]>([
 
 function onCreateDataType(value: string) {
   dataTypeItems.value.push(value)
-  dataType.value = value
+  dmpForm.value.dataType = value
 }
 
-const dataSource = ref('')
 const humanSubjectsItems = ref(['Yes', 'No'])
-const humanSubjects = ref('No')
-const dataSharing = ref('')
-const dataVolume = ref('')
 const dmpStore = useState('dmp-data', () => null)
 const items = ref([
   {
@@ -98,14 +99,14 @@ async function generateDMP() {
   
   const payload = {
     title: "Data Management Plan",
-    agency: agency.value,
-    projectSummary: projectSummary.value,
-    dataType: dataType.value,
-    dataSource: dataSource.value,
-    humanSubjects: humanSubjects.value,
-    dataSharing: dataSharing.value,
-    dataVolume: dataVolume.value,
-  };
+    agency: dmpForm.value.agency,
+    projectSummary: dmpForm.value.projectSummary,
+    dataType: dmpForm.value.dataType,
+    dataSource: dmpForm.value.dataSource,
+    humanSubjects: dmpForm.value.humanSubjects,
+    dataSharing: dmpForm.value.dataSharing,
+    dataVolume: dmpForm.value.dataVolume,
+  }
 
   try {
     const submitRes = await $fetch('https://dev.dmpchef.org/api/query', {
@@ -144,6 +145,19 @@ async function generateDMP() {
     // You can add an alert here for the user
   }
 }
+
+function clearForm() {
+  dmpForm.value = {
+    selectedAgency: '',
+    agency: '',
+    projectSummary: '',
+    dataType: '',
+    dataSource: '',
+    humanSubjects: 'No',
+    dataSharing: '',
+    dataVolume: ''
+  }
+}
 </script>
 
 <template>
@@ -179,38 +193,38 @@ async function generateDMP() {
         <URadioGroup
           variant="card"
           orientation="horizontal"
-          v-model="selectedAgency"
+          v-model="dmpForm.selectedAgency"
           :items="agencyItems"
         />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Select Institute/Department:</h1>
       <div class="w-2/3">
         <USelectMenu
           class="w-180 text-base"
-          v-model="agency"
+          v-model="dmpForm.agency"
           :items="NIHAgencyItems"
           placeholder="Choose department or institute"
         />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Brief summary of the research context:</h1>
       <div class="w-2/3">
         <UTextarea size="xl" placeholder="Provide a short description of the research goals, setting, and scientific background." 
-          autoresize class="w-180" v-model="projectSummary" />
+          autoresize class="w-180" v-model="dmpForm.projectSummary" />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Types of data to be collected:</h1>
       <div class="w-2/3">
         <USelectMenu
   class="w-180 text-base"
-  v-model="dataType"
+  v-model="dmpForm.dataType"
   :items="dataTypeItems"
   placeholder="Specify the kinds of data your project will generate (e.g., imaging, surveys, genomic data)."
   searchable
@@ -221,38 +235,38 @@ async function generateDMP() {
       </div>
     </div>
     
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Source of data:</h1>
       <div class="w-2/3">
         <UTextarea size="xl" placeholder="Describe where or how the data will be obtained (e.g., participants, sensors, public datasets)." 
-          autoresize class="w-180" v-model="dataSource" />
+          autoresize class="w-180" v-model="dmpForm.dataSource" />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Human subjects:</h1>
       <div class="w-2/3">
-        <URadioGroup orientation="horizontal" variant="card" default-value="System" v-model="humanSubjects" :items="humanSubjectsItems" />
+        <URadioGroup orientation="horizontal" variant="card" default-value="System" v-model="dmpForm.humanSubjects" :items="humanSubjectsItems" />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Data sharing consent status (if applicable):</h1>
       <div class="w-2/3">
         <UTextarea size="xl" placeholder="Provide the consent status for sharing data collected from human subjects, if relevant." 
-          autoresize class="w-180" v-model="dataSharing" />
+          autoresize class="w-180" v-model="dmpForm.dataSharing" />
       </div>
     </div>
 
-    <div v-if="selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex items-center justify-between gap-6">
       <h1 class="font-medium text-xl w-1/3">Estimated data volume, modality, and format:</h1>
       <div class="w-2/3">
         <UTextarea size="xl" placeholder="Enter the approximate amount of data and its expected modality (e.g., text, images) and file format (e.g., CSV, JPEG, JSON)." 
-          autoresize class="w-180" v-model="dataVolume" />
+          autoresize class="w-180" v-model="dmpForm.dataVolume" />
       </div>
     </div>
     
-    <div v-if="selectedAgency === 'NIH'" class="flex justify-center pt-4">
+    <div v-if="dmpForm.selectedAgency === 'NIH'" class="flex justify-center gap-36 pt-4">
       <UModal v-model="isGenerating" prevent-close :ui="{ width: 'sm:max-w-md' }">
         
         <UButton
@@ -260,7 +274,7 @@ async function generateDMP() {
           @click="generateDMP"
           color="primary"
           size="xl"
-          class="w-45"
+          class="w-50"
           icon="i-lucide-sparkles"
         >
           Generate DMP
@@ -279,6 +293,15 @@ async function generateDMP() {
           </div>
         </template>
       </UModal>
+      <UButton
+        color="primary"
+        variant="outline"
+        size="xl"
+        icon="i-heroicons-trash"
+        @click="clearForm"
+      >
+        Clear form
+      </UButton>
     </div>
 
     <SkyBg />

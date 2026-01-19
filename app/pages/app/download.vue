@@ -72,47 +72,123 @@ function downloadJSON() {
 
 // DOCX
 async function downloadDOCX() {
-  const doc = new Document({
-    sections: [
-      {
-        properties: {},
-        children: Object.entries(dmp.value).map(([key, value]: any) =>
-          new Paragraph({
-            children: [
-              new TextRun({ text: key, bold: true, size: 28 }),
-              new TextRun({ text: '\n' + JSON.stringify(value, null, 2), size: 24 }),
-            ],
-            spacing: { after: 200 }
-          })
-        ),
-      },
-    ],
-  })
+  if (!dmp.value) return
 
+  const docChildren: any[] = [
+    new Paragraph({
+      children: [new TextRun({ text: "Data Management and Sharing Plan", bold: true, size: 44 })],
+      spacing: { after: 400 },
+    })
+  ]
+
+  // Loop through each Element (e.g., Element 1, Element 2)
+  for (const [elementKey, elementValue] of Object.entries(dmp.value)) {
+    // 1. Add the main Element Header
+    docChildren.push(new Paragraph({
+      children: [new TextRun({ text: elementKey, bold: true, size: 28, color: "2b5797" })],
+      spacing: { before: 300, after: 120 },
+    }))
+
+    const val: any = elementValue
+
+    // 2. Check if it's a direct description or nested sub-items
+    if (val.description) {
+      // Direct description (like Element 2, 3, 6)
+      docChildren.push(new Paragraph({
+        children: [new TextRun({ text: val.description, size: 22 })],
+        spacing: { after: 200 },
+      }))
+    } else {
+      // Nested sub-items (like Element 1, 4, 5)
+      for (const [subKey, subVal] of Object.entries(val)) {
+        const item = subVal as any
+        docChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: `${item.title}`, bold: true, size: 22 })],
+            spacing: { before: 100, after: 40 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: item.description, size: 22 })],
+            spacing: { after: 160 },
+          })
+        )
+      }
+    }
+  }
+
+  const doc = new Document({ sections: [{ children: docChildren }] })
   const blob = await Packer.toBlob(doc)
-  saveAs(blob, 'DMP.docx')
+  saveAs(blob, 'DMP_Plan.docx')
 }
 
 // PDF
 function downloadPDF() {
   const doc = new jsPDF()
-  let y = 10
+  let y = 20
+  const margin = 15
+  const pageWidth = 180
 
-  for (const [key, value] of Object.entries(dmp.value)) {
-    doc.setFontSize(14)
-    doc.text(key, 10, y)
-    y += 8
-    doc.setFontSize(12)
-
-    const lines = doc.splitTextToSize(JSON.stringify(value, null, 2), 180)
-    doc.text(lines, 10, y)
-    y += lines.length * 6 + 10
-
-    // New page if too long
-    if (y > 280) y = 10, doc.addPage()
+  const checkPage = (heightNeeded: number) => {
+    if (y + heightNeeded > 275) {
+      doc.addPage()
+      y = 20
+    }
   }
 
-  doc.save('DMP.pdf')
+  // Main Title
+  doc.setFontSize(20)
+  doc.setTextColor(40, 90, 150)
+  doc.text("Data Management and Sharing Plan", margin, y)
+  y += 15
+
+  for (const [elementKey, elementValue] of Object.entries(dmp.value)) {
+    // 1. Element Header
+    checkPage(15)
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(14)
+    doc.setTextColor(43, 87, 151)
+    doc.text(elementKey, margin, y)
+    y += 8
+
+    const val: any = elementValue
+
+    if (val.description) {
+      // Handle simple Element (description only)
+      doc.setFont("helvetica", "normal")
+      doc.setFontSize(11)
+      doc.setTextColor(0, 0, 0)
+      const lines = doc.splitTextToSize(val.description, pageWidth)
+      checkPage(lines.length * 6)
+      doc.text(lines, margin, y)
+      y += (lines.length * 6) + 8
+    } else {
+      // Handle nested Element (1, 2, 3...)
+      for (const [subKey, subVal] of Object.entries(val)) {
+        const item = subVal as any
+        
+        // Sub-title
+        doc.setFont("helvetica", "bold")
+        doc.setFontSize(11)
+        doc.setTextColor(60, 60, 60)
+        const subTitleLines = doc.splitTextToSize(item.title, pageWidth)
+        checkPage(subTitleLines.length * 6)
+        doc.text(subTitleLines, margin, y)
+        y += (subTitleLines.length * 5) + 2
+
+        // Description text
+        doc.setFont("helvetica", "normal")
+        doc.setFontSize(11)
+        doc.setTextColor(0, 0, 0)
+        const descLines = doc.splitTextToSize(item.description, pageWidth)
+        checkPage(descLines.length * 6)
+        doc.text(descLines, margin, y)
+        y += (descLines.length * 6) + 6
+      }
+    }
+    y += 4 // Extra spacing between Elements
+  }
+
+  doc.save('DMP_Plan.pdf')
 }
 
 const items = ref([

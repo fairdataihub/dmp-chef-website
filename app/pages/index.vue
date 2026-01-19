@@ -67,7 +67,7 @@ const communitylinks = ref([
               Data Management Plans (DMPs). Researchers often struggle to write DMPs because they require advance knowledge 
               of data types, metadata standards, repositories, and funder-specific sharing requirements. 
               DMP Chef addresses this challenge by translating high-level project descriptions into funder-compliant DMP, 
-              using a tailored prompt, funder templates, funder guidelines, and a large language model (LLM).  
+              using a tailored prompt, funder templates, funder guidelines, and an open source large language model (LLM) enhanced with a custom RAG pipeline.  
               This project is part of a broader extension of the 
               <a href="https://dmptool.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">DMP Tool</a> platform.
             </p>

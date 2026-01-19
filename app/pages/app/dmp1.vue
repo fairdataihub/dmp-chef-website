@@ -40,6 +40,15 @@ const open = ref(true)
 defineShortcuts({
   o: () => open.value = !open.value
 })
+
+const showBackConfirm = ref(false)
+
+function confirmBack() {
+  // Clear DMP data (optional, since it will be lost)
+  dmpStore.value = null
+  // Navigate back
+  navigateTo('/app/dmp')
+}
 </script>
 
 <template>
@@ -518,16 +527,47 @@ defineShortcuts({
   </div>
 
 
-        <div class="flex justify-between pt-4">
-      <UButton 
-        color="primary"
-        size="xl"
-        class="w-25"
-        icon="ooui:arrow-next-rtl"
-        to="/app/dmp"
-      >
-        Back
-      </UButton>
+    <div class="flex justify-between pt-4">
+  <UModal
+    v-model:open="showBackConfirm"
+    :prevent-close="true"
+    title="Confirm Navigation"
+  >
+    <!-- Trigger button inside modal as per Nuxt pattern -->
+    <UButton
+      color="primary"
+      size="xl"
+      class="w-25"
+      icon="ooui:arrow-next-rtl"
+    >
+      Back
+    </UButton>
+
+    <template #body>
+      <p class="text-gray-700 dark:text-gray-200">
+        Are you sure you want to go back? The generated DMP will be lost.
+      </p>
+    </template>
+
+    <template #footer="{ close }">
+      <div class="flex justify-end gap-60 py-6"> <!-- taller footer -->
+        <!-- Cancel calls the close function provided by the slot -->
+        <UButton
+          label="Cancel"
+          color="primary"
+          variant="outline"
+          size="xl"
+          @click="close()"
+        />
+        <UButton
+          label="Yes, go back"
+          color="success"
+          size="xl"
+          @click="confirmBack"
+        />
+      </div>
+    </template>
+  </UModal>
 
       <UButton 
         color="primary"
