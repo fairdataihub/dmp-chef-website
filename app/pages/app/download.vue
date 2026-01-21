@@ -2,6 +2,8 @@
 import { saveAs } from 'file-saver'
 import { Document, Packer, Paragraph, TextRun } from 'docx'
 import { jsPDF } from 'jspdf'
+import PizZip from 'pizzip'
+import Docxtemplater from 'docxtemplater'
 
 // DMP state
 const dmpStore = useState('dmp-data')
@@ -72,53 +74,31 @@ function downloadJSON() {
 
 // DOCX
 async function downloadDOCX() {
-  if (!dmp.value) return
+  const response = await fetch('/templates/NIH_Template.docx')
+  const content = await response.arrayBuffer()
+  const zip = new PizZip(content)
+  const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true })
 
-  const docChildren: any[] = [
-    new Paragraph({
-      children: [new TextRun({ text: "Data Management and Sharing Plan", bold: true, size: 44 })],
-      spacing: { after: 400 },
-    })
-  ]
+  // Map the nested AI result to your Word Template Tags
+  const d = dmp.value
+  doc.setData({
+    e1_res1: d["Element 1: Data Type"]["1"].description,
+    e1_res2: d["Element 1: Data Type"]["2"].description,
+    e1_res3: d["Element 1: Data Type"]["3"].description,
+    e2_res:  d["Element 2: Related Tools, Software and/or Code"].description,
+    e3_res:  d["Element 3: Standards"].description,
+    e4_res1: d["Element 4: Data Preservation, Access, and Associated Timelines"]["1"].description,
+    e4_res2: d["Element 4: Data Preservation, Access, and Associated Timelines"]["2"].description,
+    e4_res3: d["Element 4: Data Preservation, Access, and Associated Timelines"]["3"].description,
+    e5_res1: d["Element 5: Access, Distribution, or Reuse Considerations"]["1"].description,
+    e5_res2: d["Element 5: Access, Distribution, or Reuse Considerations"]["2"].description,
+    e5_res3: d["Element 5: Access, Distribution, or Reuse Considerations"]["3"].description,
+    e6_res:  d["Element 6: Oversight of Data Management and Sharing"].description
+  })
 
-  // Loop through each Element (e.g., Element 1, Element 2)
-  for (const [elementKey, elementValue] of Object.entries(dmp.value)) {
-    // 1. Add the main Element Header
-    docChildren.push(new Paragraph({
-      children: [new TextRun({ text: elementKey, bold: true, size: 28, color: "2b5797" })],
-      spacing: { before: 300, after: 120 },
-    }))
-
-    const val: any = elementValue
-
-    // 2. Check if it's a direct description or nested sub-items
-    if (val.description) {
-      // Direct description (like Element 2, 3, 6)
-      docChildren.push(new Paragraph({
-        children: [new TextRun({ text: val.description, size: 22 })],
-        spacing: { after: 200 },
-      }))
-    } else {
-      // Nested sub-items (like Element 1, 4, 5)
-      for (const [subKey, subVal] of Object.entries(val)) {
-        const item = subVal as any
-        docChildren.push(
-          new Paragraph({
-            children: [new TextRun({ text: `${item.title}`, bold: true, size: 22 })],
-            spacing: { before: 100, after: 40 },
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: item.description, size: 22 })],
-            spacing: { after: 160 },
-          })
-        )
-      }
-    }
-  }
-
-  const doc = new Document({ sections: [{ children: docChildren }] })
-  const blob = await Packer.toBlob(doc)
-  saveAs(blob, 'DMP_Plan.docx')
+  doc.render()
+  const out = doc.getZip().generate({ type: 'blob' })
+  saveAs(out, 'DMP_Plan.docx')
 }
 
 // PDF

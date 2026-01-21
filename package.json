@@ -27,10 +27,12 @@
     "bcrypt": "^5.1.1",
     "date-fns": "^4.1.0",
     "docx": "^9.5.1",
+    "docxtemplater": "^3.67.6",
     "file-saver": "^2.0.5",
     "jspdf": "^3.0.4",
     "marked": "^15.0.7",
     "nodemailer": "^6.10.0",
+    "pizzip": "^3.2.0",
     "sanitize-html": "^2.14.0"
   },
   "devDependencies": {
