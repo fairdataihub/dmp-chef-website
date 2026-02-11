@@ -119,21 +119,21 @@ const communitylinks = ref([
           <!-- Team cards -->
           <a href="https://fairdataihub.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
-              <img src="/../public/logos/fair_logo.svg" alt="FAIR Data Innovations Hub" class="h-full w-auto object-contain" />
+              <img src="/../public/logos/fair_logo.svg" alt="" class="h-full w-auto object-contain" />
             </div>
             <span class="font-bold text-gray-900 dark:text-white text-sm">FAIR Data Innovations Hub</span>
           </a>
 
           <a href="https://cdlib.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
-              <img src="/../public/logos/logo_cdl.svg" alt="California Digital Library" class="h-full w-auto object-contain" />
+              <img src="/../public/logos/logo_cdl.svg" alt="" class="h-full w-auto object-contain" />
             </div>
             <span class="font-bold text-gray-900 dark:text-white text-sm">California Digital Library</span>
           </a>
 
           <a href="https://dmptool.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
-              <img src="/../public/logos/dmp_tool_logo.svg" alt="DMPTool" class="h-full w-auto object-contain" />
+              <img src="/../public/logos/dmp_tool_logo.svg" alt="" class="h-full w-auto object-contain" />
             </div>
             <span class="font-bold text-gray-900 dark:text-white text-sm">DMP Tool</span>
           </a>
