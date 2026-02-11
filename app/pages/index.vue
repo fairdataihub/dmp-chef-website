@@ -4,9 +4,21 @@ useSeoMeta({
 });
 
 const links = ref([
-  { label: "View GitHub repo", to: "https://github.com/fairdataihub/dmpchef", icon: "i-simple-icons-github", target: "_blank" },
-  { label: "Test it", to: "/app/dmp", variant: "subtle" as const, trailingIcon: "i-lucide-arrow-right" },
+  {
+    label: "View GitHub repo",
+    to: "https://github.com/fairdataihub/dmpchef",
+    icon: "i-simple-icons-github",
+    target: "_blank",
+    class: "text-gray-900 dark:text-black bg-white border"
+  },
+  {
+    label: "Test it",
+    to: "/app/dmp",
+    trailingIcon: "i-lucide-arrow-right",
+    class: "text-gray-900 dark:text-black bg-white border"
+  },
 ]);
+
 
 const snapshots = ref([
   { title: '12,000+ DMPs', description: 'Generated automatically through DMP Chef, helping researchers create funder-compliant plans efficiently.', to: '' },
@@ -28,7 +40,7 @@ const roadmapItems = ref([
   { date: 'Oct 2025 – Mar 2026', title: 'Phase 1', description: 'Define the user workflow, test improvement strategies, and build the Alpha prototype to draft NIH-compliant DMPs. This phase ends with internal testing and refinement.', icon: 'i-lucide-git-branch' },
   { date: 'Apr 2026 – Sep 2026', title: 'Phase 2', description: 'Add general-purpose and multi-funder DMP drafting capabilities (e.g., NSF) and deliver the Beta prototype. This phase ends with external user testing and refinement.', icon: 'i-lucide-package-open' },
   { isSpacer: true, date: '', title: '', description: '', icon: 'i-lucide-more-horizontal' },
-  { date: 'TBD', title: 'Phase N: Integration with DMP Tools', description: 'Integrate the DMP Chef back-end with <a href="https://dmptool.org" target="_blank" class="text-blue-500 underline">DMPTool.org</a>', icon: 'i-lucide-server' }
+  { date: 'TBD', title: 'Phase N: Integration with DMP Tools', description: 'Integrate the DMP Chef back-end with <a href="https://dmptool.org" target="_blank" class="text-blue-700 dark:text-white underline">DMPTool.org</a>', icon: 'i-lucide-server' }
 ]);
 
 const communitylinks = ref([
@@ -48,7 +60,16 @@ const communitylinks = ref([
     </div>
 
     <!-- Page hero -->
-    <UPageHero class="-mt-24" title="DMP Chef" description="A Python pipeline for crafting Data Management Plans (DMPs)" orientation="vertical" :links="links">
+    <UPageHero 
+      class="-mt-24" 
+      title="DMP Chef" 
+      description="A Python pipeline for crafting Data Management Plans (DMPs)" 
+      orientation="vertical" 
+      :links="links" 
+      :ui="{
+        links: 'text-slate-900 dark:text-white'
+      }"
+    >
       <SkyBg />
     </UPageHero>
 
@@ -61,15 +82,15 @@ const communitylinks = ref([
         </div>
         <div class="relative z-10 px-6 py-8 md:px-10 md:py-12 text-center">
           <h2 class="mb-6 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Overview</h2>
-          <div class="mx-auto max-w-4xl space-y-4 text-base leading-relaxed text-gray-600 dark:text-gray-300">
+          <div class="mx-auto max-w-4xl space-y-4 text-base leading-relaxed text-gray-700 dark:text-gray-300">
             <p>
-              <span class="font-semibold text-blue-500 dark:text-blue-400">DMP Chef</span> is an open-source (MIT License), Python-based pipeline that leverages AI to draft funder-compliant 
+              <span class="font-semibold text-blue-700 dark:text-blue-400">DMP Chef</span> is an open-source (MIT License), Python-based pipeline that leverages AI to draft funder-compliant 
               Data Management Plans (DMPs). Researchers often struggle to write DMPs because they require advance knowledge 
               of data types, metadata standards, repositories, and funder-specific sharing requirements. 
               DMP Chef addresses this challenge by translating high-level project descriptions into funder-compliant DMP, 
               using a tailored prompt, funder templates, funder guidelines, and an open source large language model (LLM) enhanced with a custom RAG pipeline.  
               This project is part of a broader extension of the 
-              <a href="https://dmptool.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">DMP Tool</a> platform.
+              <a href="https://dmptool.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 transition-colors">DMP Tool</a> platform.
             </p>
             <p>
               This website is meant to provide information about the DMP Chef pipeline and also provide a testing interface. 
@@ -86,7 +107,7 @@ const communitylinks = ref([
       <div class="text-center space-y-6">
         <h2 class="text-3xl font-bold">Team</h2>
         <p class="max-w-4xl mx-auto text-base leading-relaxed text-gray-700 dark:text-gray-300">
-          <span class="font-bold text-blue-400 dark:text-white">DMP Chef</span> is developed by the 
+          <span class="font-bold text-blue-700 dark:text-white">DMP Chef</span> is developed by the 
           <span class="font-semibold text-gray-900 dark:text-white">FAIR Data Innovations Hub</span> 
           in collaboration with the 
           <span class="font-semibold text-gray-900 dark:text-white">California Digital Library (CDL)</span> 
@@ -96,21 +117,21 @@ const communitylinks = ref([
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center justify-items-center pt-6">
           <!-- Team cards -->
-          <a href="https://fairdataihub.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-gray-50/50 p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
+          <a href="https://fairdataihub.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
               <img src="/../public/logos/fair_logo.svg" alt="FAIR Data Innovations Hub" class="h-full w-auto object-contain" />
             </div>
             <span class="font-bold text-gray-900 dark:text-white text-sm">FAIR Data Innovations Hub</span>
           </a>
 
-          <a href="https://cdlib.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-gray-50/50 p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
+          <a href="https://cdlib.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
               <img src="/../public/logos/logo_cdl.svg" alt="California Digital Library" class="h-full w-auto object-contain" />
             </div>
             <span class="font-bold text-gray-900 dark:text-white text-sm">California Digital Library</span>
           </a>
 
-          <a href="https://dmptool.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-gray-50/50 p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
+          <a href="https://dmptool.org" target="_blank" class="group flex flex-col h-48 w-full items-center justify-center gap-3 rounded-2xl border border-transparent bg-white p-4 transition-all hover:border-gray-200 hover:bg-gray-100/80 dark:bg-white/5 dark:hover:bg-white/10 dark:hover:border-white/20">
             <div class="flex h-32 w-full items-center justify-center rounded-xl bg-white/90 dark:bg-white p-2 shadow-sm">
               <img src="/../public/logos/dmp_tool_logo.svg" alt="DMPTool" class="h-full w-auto object-contain" />
             </div>
@@ -123,11 +144,11 @@ const communitylinks = ref([
     <!-- Roadmap section -->
     <UContainer class="my-12">
       <h2 class="text-3xl font-bold text-center mb-8">Project Roadmap</h2>
-      <div class="p-6 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-900/50 shadow-lg">
-        <UTimeline :items="roadmapItems" :ui="{ wrapper: 'space-y-4', container: 'min-h-10', date: 'text-sm text-gray-500 dark:text-gray-400 font-medium', title: 'text-xl font-bold text-gray-900 dark:text-white', description: 'text-base text-gray-700 dark:text-gray-300' }">
+      <div class="p-6 border border-gray-200 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-800/50 shadow-lg">
+        <UTimeline :items="roadmapItems" :ui="{ wrapper: 'space-y-4', container: 'min-h-10', date: 'text-sm text-gray-700 dark:text-gray-400 font-medium', title: 'text-xl font-bold text-gray-900 dark:text-white', description: 'text-base text-gray-700 dark:text-gray-300' }">
           <template #description="{ item }">
             <div v-if="item.isSpacer" style="height: 3rem;"></div>
-            <div v-else v-html="item.description"></div>
+            <div v-else v-html="item.description" class="text-base text-gray-700 dark:text-gray-300"></div>
           </template>
         </UTimeline>
       </div>
@@ -140,14 +161,14 @@ const communitylinks = ref([
           <h2 class="text-3xl font-bold mb-4">Funding</h2>
           <p class="text-base leading-relaxed text-gray-800 dark:text-white">
             This project is a 
-            <a href="https://new.nsf.gov/" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-500 transition-colors">National Science Foundation (NSF)</a> 
+            <a href="https://new.nsf.gov/" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-700 transition-colors">National Science Foundation (NSF)</a> 
             and 
-            <a href="https://chanzuckerberg.com" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-500 transition-colors">Chan Zuckerberg Initiative (CZI)</a>-funded collaboration between the 
-            <a href="https://fairdataihub.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-500 transition-colors">FAIR Data Innovations Hub</a> 
+            <a href="https://chanzuckerberg.com" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-700 transition-colors">Chan Zuckerberg Initiative (CZI)</a>-funded collaboration between the 
+            <a href="https://fairdataihub.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-700 transition-colors">FAIR Data Innovations Hub</a> 
             and 
-            <a href="https://cdlib.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-500 transition-colors">California Digital Library</a> 
+            <a href="https://cdlib.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-700 transition-colors">California Digital Library</a> 
             (University of California Office of the President) as part of a broader extension of the 
-            <a href="https://dmptool.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-500 transition-colors">DMP Tool</a> platform.
+            <a href="https://dmptool.org" target="_blank" rel="noopener noreferrer" class="font-semibold underline decoration-blue-400 hover:text-blue-700 transition-colors">DMP Tool</a> platform.
           </p>
         </div>
       </UContainer>
