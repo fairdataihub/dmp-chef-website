@@ -19,23 +19,6 @@ const links = ref([
   },
 ]);
 
-
-const snapshots = ref([
-  { title: '12,000+ DMPs', description: 'Generated automatically through DMP Chef, helping researchers create funder-compliant plans efficiently.', to: '' },
-  { title: '30 Institutions', description: 'Universities, research centers, and data offices actively collaborating and using DMP Chef worldwide.', to: '' },
-  { title: '25 Funders', description: 'Supported templates for agencies including NIH, NSF, DOE, and Horizon Europe.', to: '' },
-  { title: '4 AI Models', description: 'Fine-tuned and optimized for research data policies and FAIR data principles.', to: '' },
-  { title: '10+ Contributors', description: 'Researchers, developers, and data stewards improving the open-source DMP Chef platform.', to: '' }
-]);
-
-const technologies = ref([
-  { title: 'Prompt Engineering', description: 'Custom-designed prompts ensure precise, context-aware responses that align with funder requirements and research domains.', icon: 'tabler:app-window', to: '' },
-  { title: 'Retrieval-Augmented Generation (RAG)', description: 'Combines AI generation with real-time access to structured knowledge bases for accurate, up-to-date content.', icon: 'mdi:database-search', to: '' },
-  { title: 'Fine-Tuned Language Models', description: 'Models optimized on research data policy language and DMP examples to improve factuality and style consistency.', icon: 'mdi:chip', to: '' },
-  { title: 'Vector Databases', description: 'High-performance semantic search supports retrieval of relevant policy documents and prior DMPs.', icon: 'mdi:vector-arrange-above', to: '' },
-  { title: 'Open-Source Infrastructure', description: 'Built with transparency and extensibility in mind, enabling community-driven development and easy institutional adoption.', icon: 'mdi:earth', to: '' }
-]);
-
 const roadmapItems = ref([
   { date: 'Oct 2025 – Mar 2026', title: 'Phase 1', description: 'Define the user workflow, test improvement strategies, and build the Alpha prototype to draft NIH-compliant DMPs. This phase ends with internal testing and refinement.', icon: 'i-lucide-git-branch' },
   { date: 'Apr 2026 – Sep 2026', title: 'Phase 2', description: 'Add general-purpose and multi-funder DMP drafting capabilities (e.g., NSF) and deliver the Beta prototype. This phase ends with external user testing and refinement.', icon: 'i-lucide-package-open' },
