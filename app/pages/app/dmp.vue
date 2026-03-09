@@ -62,6 +62,7 @@ function onCreateDataType(value: string) {
 
 const humanSubjectsItems = ref(['Yes', 'No'])
 const dmpStore = useState('dmp-data', () => null)
+const jobIdStore = useState<string | null>('dmp-job-id', () => null)
 const items = ref([
   {
     date: 'Step 1',
@@ -115,13 +116,14 @@ async function generateDMP() {
     }) as { job_id: string };
 
     const jobId = submitRes.job_id;
+    jobIdStore.value = jobId
     console.log("Job submitted! ID:", jobId);
 
     // --- PART B: POLL FOR RESULTS ---
     let isDone = false;
     while (!isDone) {
-      // Wait 60 seconds before checking
-      await new Promise(resolve => setTimeout(resolve, 60000));
+      // Wait 30 seconds before checking
+      await new Promise(resolve => setTimeout(resolve, 30000));
 
       console.log("Checking GPU status...");
       const statusRes = await $fetch<StatusResponse>(`https://dev.dmpchef.org/api/status?id=${jobId}`);
