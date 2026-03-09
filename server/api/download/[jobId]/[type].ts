@@ -1,8 +1,8 @@
-import { getQuery, createError, setHeader } from "h3"
+import { createError, setHeader } from "h3"
 
 export default defineEventHandler(async (event) => {
 
-  /* --- CORS --- */
+  /* ---------------- CORS ---------------- */
   setHeader(event, "Access-Control-Allow-Origin", "*")
   setHeader(event, "Access-Control-Allow-Methods", "GET, OPTIONS")
   setHeader(event, "Access-Control-Allow-Headers", "Content-Type")
@@ -12,29 +12,29 @@ export default defineEventHandler(async (event) => {
     return ""
   }
 
+  /* ---------------- Params ---------------- */
+  const jobId = event.context.params?.jobId
+  const type = event.context.params?.type
+
+  if (!jobId || !type) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Missing jobId or type"
+    })
+  }
+
+  const baseUrl = process.env.DMP_API
+
+  if (!baseUrl) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Missing backend URL"
+    })
+  }
+
   try {
 
-    const query = getQuery(event)
-    const jobId = query.job_id as string
-    const type = query.type as string
-
-    if (!jobId || !type) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: "Missing job_id or type"
-      })
-    }
-
-    const baseUrl = process.env.DMP_API
-
-    if (!baseUrl) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Missing backend URL"
-      })
-    }
-
-    /* Call Flask backend */
+    /* -------- Call Flask backend -------- */
     const response = await fetch(`${baseUrl}/download/${jobId}/${type}`)
 
     if (!response.ok) {
@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    /* Get file buffer */
+    /* -------- Read file -------- */
     const buffer = await response.arrayBuffer()
 
     const contentType =
@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
       response.headers.get("content-disposition") ||
       `attachment; filename="dmp.${type}"`
 
-    /* Forward headers */
+    /* -------- Forward headers -------- */
     setHeader(event, "Content-Type", contentType)
     setHeader(event, "Content-Disposition", filename)
 
