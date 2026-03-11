@@ -86,7 +86,6 @@ const items = ref([
   }
 ])
 
-// --- Loader State ---
 const isGenerating = ref(false)
 interface StatusResponse {
   status: 'processing' | 'completed' | 'failed' | 'not_found';
