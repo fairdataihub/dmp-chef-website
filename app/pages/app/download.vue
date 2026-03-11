@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import { saveAs } from 'file-saver'
 
-/* -----------------------------
-Global State
-------------------------------*/
 const dmpStore = useState('dmp-data')
 const jobIdStore = useState<string | null>('dmp-job-id')
 
 const dmp = computed(() => dmpStore.value)
 const jobId = computed(() => jobIdStore.value)
 
-/* Redirect if missing result */
 if (!dmp.value) {
   navigateTo('/app/dmp')
 }
 
-/* -----------------------------
-Download Format Options
-------------------------------*/
 const downloadItems = ref([
   { label: 'DOCX', value: 'docx', description: 'Word document' },
   { label: 'Markdown', value: 'md', description: 'Markdown file' },
@@ -26,9 +19,6 @@ const downloadItems = ref([
 
 const selectedFormat = ref('json')
 
-/* -----------------------------
-Feedback Modal
-------------------------------*/
 const isFeedbackModalOpen = ref(false)
 const feedbackStep = ref(1)
 const userRating = ref<'yes' | 'no' | null>(null)
@@ -48,9 +38,6 @@ function submitFeedback() {
   isFeedbackModalOpen.value = false
 }
 
-/* -----------------------------
-Download Logic (API Based)
-------------------------------*/
 async function handleDownload() {
   if (!jobId.value) {
     console.error("Missing job ID")
@@ -73,16 +60,12 @@ async function handleDownload() {
     console.error("Download error:", err)
   }
 
-  /* Open feedback modal */
   feedbackStep.value = 1
   userRating.value = null
   userComment.value = ''
   isFeedbackModalOpen.value = true
 }
 
-/* -----------------------------
-Timeline
-------------------------------*/
 const items = ref([
   {
     date: 'Step 1',

@@ -45,7 +45,6 @@ const NIHAgencyItems = [
   "National Center for Complementary and Integrative Health (NCCIH)",
   "Fogarty International Center (FIC)",
   "Office of the Director (NIH Office of the Director)",
-  // … you can include additional NIH offices/centers as needed
 ];
 
 const dataTypeItems = ref<string[]>([
@@ -119,7 +118,7 @@ async function generateDMP() {
     jobIdStore.value = jobId
     console.log("Job submitted! ID:", jobId);
 
-    // --- PART B: POLL FOR RESULTS ---
+    // POLL FOR RESULTS ---
     let isDone = false;
     while (!isDone) {
       // Wait 30 seconds before checking
@@ -129,7 +128,6 @@ async function generateDMP() {
       const statusRes = await $fetch<StatusResponse>(`https://dev.dmpchef.org/api/status?id=${jobId}`);
 
       if (statusRes.status === 'completed') {
-        // SUCCESS! 
         dmpStore.value = statusRes.result;
         isGenerating.value = false;
         isDone = true;
@@ -144,7 +142,6 @@ async function generateDMP() {
   } catch (err) {
     console.error("Generation Workflow Failed:", err);
     isGenerating.value = false;
-    // You can add an alert here for the user
   }
 }
 
